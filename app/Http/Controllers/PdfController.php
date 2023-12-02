@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pdf;
 use Illuminate\Http\Request;
+use Smalot\PdfParser\Parser;
 
 class PdfController extends Controller
 {
@@ -48,6 +49,8 @@ class PdfController extends Controller
         ]
     );
 
+    auth()->user()->pdfs()->save($pdf);
+return redirect()->route('pdfs.index');
     }
 
     /**
