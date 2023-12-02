@@ -20,7 +20,7 @@ class PdfController extends Controller
      */
     public function create()
     {
-        return "Create PDF" ;
+        return view('pdfs.create') ;
     }
 
     /**
@@ -28,7 +28,26 @@ class PdfController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate the file is pdf
+        $request->validate([
+            'pdf' => 'required|mimes:pdf|max:2048'
+        ]);
+        // handle file upload
+        $file = $request->file('pdf');
+        $filename = $file->getClientOriginalName();
+        $path = $file->store('public/pdfs');
+        $size = $file->getSize();
+        $pageCount = $this->getPageCount($path);
+        // save file record to database
+    $pdf = new Pdf(
+        [
+            'filename' => $filename,
+            'path' => $path,
+            'size' => $size,
+            'page_count' => $pageCount,
+        ]
+    );
+
     }
 
     /**
@@ -61,5 +80,10 @@ class PdfController extends Controller
     public function destroy(Pdf $pdf)
     {
         //
+    }
+
+    private function getPageCount($path)
+    {
+        return (new Parser())->parseFile(storage_path('app/' . $path))->getDetails()['Pages'];
     }
 }

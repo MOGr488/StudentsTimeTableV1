@@ -16,6 +16,10 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                <x-nav-link :href="route('pdfs.index')" :active="request()->routeIs('pdfs.index')">
+                    {{ __('PDFs') }}
+                </x-nav-link>
+
             </div>
 
             <!-- Settings Dropdown -->

@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Pdf extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'filename',
+        'path',
+        'size',
+        'page_count',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
